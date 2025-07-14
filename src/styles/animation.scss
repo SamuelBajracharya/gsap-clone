@@ -1,0 +1,14 @@
+@use './mixins' as *;
+
+.gsap-to {
+  @include gsap-animation('to-');
+}
+
+.gsap-from {
+  @include gsap-animation('from-');
+}
+
+.gsap-fromTo {
+  @include gsap-animation('from-');
+  @include gsap-animation('to-');
+}
