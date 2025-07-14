@@ -1,5 +1,24 @@
-.main-div{
+body{
+  display: flex;
+  justify-content: space-between;
+  align-items: self-start;
+  height: 100vh;
+}
+
+.to-div{
   width: 250px;
   height: 250px;
   background: red;
+}
+.from-div{
+  width: 250px;
+  height: 250px;
+  background: blue;
+
+}
+
+.fromTo-div{
+  width: 250px;
+  height: 250px;
+  background: green;
 }

@@ -1,7 +1,55 @@
-@mixin gsap-animation($prefix: '') {
-  $p: $prefix;
+@mixin gsap-from {
+  @keyframes gsap-from-anim {
+    from {
+      transform:
+              translateX(var(--from-x, 0px))
+              translateY(var(--from-y, 0px))
+              scale(var(--from-scale, 1))
+              rotate(var(--from-rotate, 0deg));
+      opacity: var(--from-opacity, 1);
+    }
+    to {
+      transform: none;
+      opacity: 1;
+    }
+  }
 
-  @keyframes gsap-anim-#{$p} {
+  animation-name: gsap-from-anim;
+  animation-duration: var(--from-duration, 1s);
+  animation-timing-function: var(--from-ease, ease);
+  animation-delay: var(--from-delay, 0s);
+  animation-iteration-count: var(--from-repeat, 1);
+  animation-direction: var(--from-direction, normal);
+  animation-fill-mode: forwards;
+}
+
+@mixin gsap-to {
+  @keyframes gsap-to-anim {
+    from {
+      transform: none;
+      opacity: 1;
+    }
+    to {
+      transform:
+              translateX(var(--to-x, 0px))
+              translateY(var(--to-y, 0px))
+              scale(var(--to-scale, 1))
+              rotate(var(--to-rotate, 0deg));
+      opacity: var(--to-opacity, 1);
+    }
+  }
+
+  animation-name: gsap-to-anim;
+  animation-duration: var(--to-duration, 1s);
+  animation-timing-function: var(--to-ease, ease);
+  animation-delay: var(--to-delay, 0s);
+  animation-iteration-count: var(--to-repeat, 1);
+  animation-direction: var(--to-direction, normal);
+  animation-fill-mode: forwards;
+}
+
+@mixin gsap-fromTo {
+  @keyframes gsap-fromTo-anim {
     from {
       transform:
               translateX(var(--from-x, 0px))
@@ -12,19 +60,19 @@
     }
     to {
       transform:
-              translateX(var(--#{$p}x, var(--from-x, 0px)))
-              translateY(var(--#{$p}y, var(--from-y, 0px)))
-              scale(var(--#{$p}scale, var(--from-scale, 1)))
-              rotate(var(--#{$p}rotate, var(--from-rotate, 0deg)));
-      opacity: var(--#{$p}opacity, var(--from-opacity, 1));
+              translateX(var(--to-x, 0px))
+              translateY(var(--to-y, 0px))
+              scale(var(--to-scale, 1))
+              rotate(var(--to-rotate, 0deg));
+      opacity: var(--to-opacity, 1);
     }
   }
 
-  animation-name: gsap-anim-#{$p};
-  animation-duration: var(--#{$p}duration, 1s);
-  animation-timing-function: var(--#{$p}ease, ease);
-  animation-delay: var(--#{$p}delay, 0s);
-  animation-iteration-count: var(--#{$p}repeat, 1);
-  animation-direction: if(var(--#{$p}yoyo, 0) == 1, alternate, normal);
+  animation-name: gsap-fromTo-anim;
+  animation-duration: var(--fromTo-duration, 1s);
+  animation-timing-function: var(--fromTo-ease, ease);
+  animation-delay: var(--fromTo-delay, 0s);
+  animation-iteration-count: var(--fromTo-repeat, 1);
+  animation-direction: var(--fromTo-direction, normal);
   animation-fill-mode: forwards;
 }

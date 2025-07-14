@@ -6,8 +6,8 @@ export class gsapClone {
         const elements = document.querySelectorAll(selector);
         elements.forEach((element) => {
             element.classList.add(`gsap-${prefix.replace(/-$/, '')}`);
+            setVariables(element, properties, prefix);
         })
-        setVariables(properties, prefix);
     }
 
     to(selector, properties) {
@@ -18,13 +18,14 @@ export class gsapClone {
         this.#apply(selector, properties, 'from-');
     }
 
-    fromTo(selector, fromProperties, toProperties) {
+    fromTo(selector, fromToProperties) {
         const elements = document.querySelectorAll(selector);
         elements.forEach((element) => {
             element.classList.add('gsap-fromTo');
+            setVariables(element, fromToProperties["from"], 'from-');
+            setVariables(element, fromToProperties["to"], 'to-');
+            setVariables(element, fromToProperties, 'fromTo-');
         });
-        setVariables(fromProperties, 'from-');
-        setVariables(toProperties, 'to-');
     }
 
 }
