@@ -1,0 +1,25 @@
+.basic-gsap{
+  display: flex;
+  justify-content: space-between;
+  align-items: self-start;
+  height: 100vh;
+  text-align: center;
+  font-size: xx-large;
+}
+
+.to-div{
+  width: 250px;
+  height: 250px;
+  background: red;
+}
+.from-div{
+  width: 250px;
+  height: 250px;
+  background: blue;
+}
+
+.fromTo-div {
+  width: 250px;
+  height: 250px;
+  background: green;
+}

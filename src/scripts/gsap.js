@@ -1,6 +1,6 @@
 import setVariables from "./setVariables.js";
 
-export class gsapClone {
+export class GsapClone {
     #animationPromise(selector, properties, prefix = '') {
         const elements = document.querySelectorAll(selector);
         return new Promise((resolve) => {

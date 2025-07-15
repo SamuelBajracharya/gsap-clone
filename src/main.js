@@ -1,8 +1,9 @@
-import {gsapClone} from './scripts/gsap.js';
+import {GsapClone} from './scripts/gsap.js';
 import './styles/styles.scss'
 
-const miniGsap = new gsapClone();
+const miniGsap = new GsapClone();
 
+//Basic GSAP
 miniGsap.to("#to-div", {
     x: '500px',
     y: '500px',

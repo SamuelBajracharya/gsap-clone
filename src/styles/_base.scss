@@ -1,25 +1,46 @@
-body{
+:root {
+  --accent: #38bdf8;
+  --bg: #0f172a;
+  --fg: #f1f5f9;
+}
+
+#app {
+  height: 100vh; // fill viewport height
+  background: var(--bg);
+  color: var(--fg);
   display: flex;
-  justify-content: space-between;
-  align-items: self-start;
-  height: 100vh;
-  text-align: center;
-  font-size: xx-large;
-}
+  flex-direction: column;
+  justify-content: center; // center vertically
+  align-items: center;     // center horizontally
+  margin: 0;
+  padding: 2rem;
+  font-family: system-ui, sans-serif;
 
-.to-div{
-  width: 250px;
-  height: 250px;
-  background: red;
-}
-.from-div{
-  width: 250px;
-  height: 250px;
-  background: blue;
-}
+  header {
+    text-align: center;
 
-.fromTo-div{
-  width: 250px;
-  height: 250px;
-  background: green;
+    h1 {
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.5rem;
+
+      a {
+        text-decoration: none;
+        background: var(--fg);
+        color: var(--bg);
+        padding: 0.5rem 1.2rem;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: #dbeafe;
+        }
+      }
+    }
+  }
 }
