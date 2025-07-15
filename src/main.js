@@ -47,33 +47,31 @@ miniGsap.fromTo(".fromTo-div", {
     }
 )
 
-const squareSize = 300; // px, size of the square side
+const squareSize = 300;
 
-const timeline = new Timeline();
+const timeline = new Timeline({
+    repeat: 'infinite',
+    direction: 'alternate',
+    ease: 'ease-in-out',
+    delay: 0,
+    duration: '2s',
+});
 timeline
     .to("#timeline-to-div", {
-        x: `${squareSize}px`, // right
+        x: `${squareSize}px`,
         y: '0px',
-        duration: '2s',
-        ease: "ease-in-out",
     })
     .to("#timeline-to-div", {
-        x: `${squareSize}px`, // down
+        x: `${squareSize}px`,
         y: `${squareSize}px`,
-        duration: '2s',
-        ease: "ease-in-out",
     })
     .to("#timeline-to-div", {
-        x: '0px', // left
-        y: `${squareSize}px`,
-        duration: '2s',
-        ease: "ease-in-out",
+        x: '0px',
+        y: `${squareSize}px`
     })
     .to("#timeline-to-div", {
-        x: '0px', // up (back to start)
+        x: '0px',
         y: '0px',
-        duration: '2s',
-        ease: "ease-in-out",
     })
     .play();
 const timeline2 = new Timeline();

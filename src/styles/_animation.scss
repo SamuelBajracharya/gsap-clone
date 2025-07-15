@@ -11,3 +11,13 @@
 .gsap-fromTo {
   @include gsap-fromTo();
 }
+
+.timeline-controller {
+  animation-duration: var(--timeline-duration, 1s);
+  animation-timing-function: var(--timeline-ease, ease);
+  animation-delay: var(--timeline-delay, 0s);
+  animation-iteration-count: var(--timeline-repeat, 1);
+  animation-direction: var(--timeline-direction, normal);
+  animation-fill-mode: var(--timeline-fill, forwards);
+  animation-play-state: running;
+}

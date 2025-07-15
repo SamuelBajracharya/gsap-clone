@@ -1,11 +1,14 @@
 import { GsapClone } from "./gsap.js";
+import setVariables from "./setVariables.js";
 
 export class Timeline extends GsapClone {
-    constructor() {
+    constructor(controller = {}) {
         super();
         this.queue = [];
         this.isPaused = false;
+        this.controller = controller;
     }
+
 
     to(selector, props) {
         this.queue.push(() => super.to(selector, props));

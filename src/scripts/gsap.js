@@ -3,11 +3,7 @@ import setVariables from "./setVariables.js";
 export class GsapClone {
     constructor() {
         this.lastState = {
-            x: "0px",
-            y: "0px",
-            scale: "1",
-            rotate: "0deg",
-            opacity: "1",
+            x: "0px", y: "0px", scale: "1", rotate: "0deg", opacity: "1",
         };
     }
 
@@ -22,7 +18,6 @@ export class GsapClone {
                 const cleanPrefix = prefix.replace(/-$/, '');
                 const className = `gsap-${cleanPrefix}`;
 
-                // Use last state's values as "from" if needed
                 if (prefix === 'to-') {
                     for (const key in this.lastState) {
                         element.style.setProperty(`--from-${key}`, fromOverride[key] ?? this.lastState[key]);
@@ -33,7 +28,6 @@ export class GsapClone {
                     }
                 }
 
-                // Set target properties
                 setVariables(element, properties, prefix);
 
                 element.classList.remove(className);
@@ -47,9 +41,8 @@ export class GsapClone {
                     element.removeEventListener("animationend", onEnd);
                     element.removeEventListener("transitionend", onEnd);
 
-                    // Save the last state after animation
                     if (prefix === 'to-') {
-                        this.lastState = { ...this.lastState, ...properties };
+                        this.lastState = {...this.lastState, ...properties};
                     } else if (prefix === 'from-') {
                     }
 
@@ -80,14 +73,29 @@ export class GsapClone {
     fromTo(selector, fromToProperties) {
         const elements = document.querySelectorAll(selector);
 
+        const configKeys = ['duration', 'ease', 'delay', 'repeat', 'direction', 'fillMode', 'iterationCount', 'animationTimingFunction'];
+
         return new Promise((resolve) => {
             let count = elements.length;
             if (count === 0) return resolve();
 
+            const configProps = {};
+            for (const key in fromToProperties) {
+                if (configKeys.includes(key)) {
+                    configProps[key] = fromToProperties[key];
+                }
+            }
+
             elements.forEach((element) => {
-                setVariables(element, fromToProperties["from"], 'from-');
-                setVariables(element, fromToProperties["to"], 'to-');
-                setVariables(element, fromToProperties, 'fromTo-');
+                if (fromToProperties.from) {
+                    setVariables(element, fromToProperties.from, 'from-');
+                }
+
+                if (fromToProperties.to) {
+                    setVariables(element, fromToProperties.to, 'to-');
+                }
+
+                setVariables(element, configProps, 'fromTo-');
 
                 element.classList.remove('gsap-fromTo');
                 void element.offsetWidth;
@@ -98,7 +106,9 @@ export class GsapClone {
                 const onEnd = () => {
                     element.removeEventListener("animationend", onEnd);
                     element.removeEventListener("transitionend", onEnd);
-                    this.lastState = { ...this.lastState, ...to }; // Update to final state
+
+                    this.lastState = {...this.lastState, ...fromToProperties.to};
+
                     if (--count === 0) resolve();
                 };
 
@@ -110,8 +120,9 @@ export class GsapClone {
                         count = 0;
                         resolve();
                     }
-                }, 5000);
+                }, 6000);
             });
         });
     }
+
 }
