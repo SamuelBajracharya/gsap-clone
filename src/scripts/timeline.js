@@ -1,25 +1,36 @@
-import {GsapClone} from "./gsap.js";
+import { GsapClone } from "./gsap.js";
 
-class Timeline extends GsapClone {
+export class Timeline extends GsapClone {
     constructor() {
         super();
         this.queue = [];
         this.isPaused = false;
     }
 
-    to(selector, properties) {
-        this.queue.push(() => super.to(selector, properties))
+    to(selector, props) {
+        this.queue.push(() => super.to(selector, props));
         return this;
     }
 
-    from(selector, properties) {
-        this.queue.push(() => super.from(selector, properties));
+    from(selector, props) {
+        this.queue.push(() => super.from(selector, props));
         return this;
     }
 
-    fromTo(selector, fromToProperties) {
-        this.queue.push(() => super.fromTo(selector, fromToProperties));
+    fromTo(selector, fromToProps) {
+        this.queue.push(() => super.fromTo(selector, fromToProps));
         return this;
+    }
+
+    play() {
+        return (async () => {
+            for (const fn of this.queue) {
+                while (this.isPaused) {
+                    await new Promise((r) => setTimeout(r, 50));
+                }
+                await fn();
+            }
+        })();
     }
 
     pause() {
@@ -30,18 +41,4 @@ class Timeline extends GsapClone {
         this.isPaused = false;
     }
 
-    reset() {
-        this.queue = [];
-    }
-
-    play() {
-        return (async () => {
-            for (const item of this.queue) {
-                while (this.isPaused) {
-                    await new Promise(r => setTimeout(r, 50));
-                }
-                await item();
-            }
-        })();
-    }
 }

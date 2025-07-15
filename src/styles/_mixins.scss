@@ -1,16 +1,12 @@
 @mixin gsap-from {
   @keyframes gsap-from-anim {
     from {
-      transform:
-              translateX(var(--from-x, 0px))
-              translateY(var(--from-y, 0px))
-              scale(var(--from-scale, 1))
-              rotate(var(--from-rotate, 0deg));
+      transform: translateX(var(--from-x, 0px)) translateY(var(--from-y, 0px)) scale(var(--from-scale, 1)) rotate(var(--from-rotate, 0deg));
       opacity: var(--from-opacity, 1);
     }
     to {
-      transform: none;
-      opacity: 1;
+      transform: translateX(var(--to-x, 0px)) translateY(var(--to-y, 0px)) scale(var(--to-scale, 1)) rotate(var(--to-rotate, 0deg));
+      opacity: var(--to-opacity, 1);
     }
   }
 
@@ -26,15 +22,11 @@
 @mixin gsap-to {
   @keyframes gsap-to-anim {
     from {
-      transform: none;
-      opacity: 1;
+      transform: translateX(var(--from-x, 0px)) translateY(var(--from-y, 0px)) scale(var(--from-scale, 1)) rotate(var(--from-rotate, 0deg));
+      opacity: var(--from-opacity, 1);
     }
     to {
-      transform:
-              translateX(var(--to-x, 0px))
-              translateY(var(--to-y, 0px))
-              scale(var(--to-scale, 1))
-              rotate(var(--to-rotate, 0deg));
+      transform: translateX(var(--to-x, 0px)) translateY(var(--to-y, 0px)) scale(var(--to-scale, 1)) rotate(var(--to-rotate, 0deg));
       opacity: var(--to-opacity, 1);
     }
   }
@@ -51,19 +43,11 @@
 @mixin gsap-fromTo {
   @keyframes gsap-fromTo-anim {
     from {
-      transform:
-              translateX(var(--from-x, 0px))
-              translateY(var(--from-y, 0px))
-              scale(var(--from-scale, 1))
-              rotate(var(--from-rotate, 0deg));
+      transform: translateX(var(--from-x, 0px)) translateY(var(--from-y, 0px)) scale(var(--from-scale, 1)) rotate(var(--from-rotate, 0deg));
       opacity: var(--from-opacity, 1);
     }
     to {
-      transform:
-              translateX(var(--to-x, 0px))
-              translateY(var(--to-y, 0px))
-              scale(var(--to-scale, 1))
-              rotate(var(--to-rotate, 0deg));
+      transform: translateX(var(--to-x, 0px)) translateY(var(--to-y, 0px)) scale(var(--to-scale, 1)) rotate(var(--to-rotate, 0deg));
       opacity: var(--to-opacity, 1);
     }
   }

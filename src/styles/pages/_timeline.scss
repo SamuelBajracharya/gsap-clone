@@ -1,0 +1,26 @@
+.timeline{
+  display: flex;
+  justify-content: space-between;
+  align-items: self-start;
+  height: 100vh;
+  text-align: center;
+  font-size: xx-large;
+}
+.timeline-div1{
+  width: 250px;
+  height: 250px;
+  background: red;
+  text-align: center;
+}
+.timeline-div2{
+  width: 250px;
+  height: 250px;
+  background: blue;
+  text-align: center;
+}
+.timeline-div3{
+  width: 250px;
+  height: 250px;
+  background: green;
+  text-align: center;
+}

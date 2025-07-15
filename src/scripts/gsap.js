@@ -1,42 +1,76 @@
 import setVariables from "./setVariables.js";
 
 export class GsapClone {
-    #animationPromise(selector, properties, prefix = '') {
+    constructor() {
+        this.lastState = {
+            x: "0px",
+            y: "0px",
+            scale: "1",
+            rotate: "0deg",
+            opacity: "1",
+        };
+    }
+
+    #animationPromise(selector, properties, prefix = '', fromOverride = {}) {
         const elements = document.querySelectorAll(selector);
+
         return new Promise((resolve) => {
-            let elementCount = elements.length;
-            if (elementCount === 0) {
-                resolve();
-                return;
-            }
+            let count = elements.length;
+            if (count === 0) return resolve();
+
             elements.forEach((element) => {
-                element.classList.add(`gsap-${prefix.replace(/-$/, '')}`);
-                setVariables(element, properties, prefix);
-                const onAnimationEnd = (event) => {
-                    if (event.target === element) {
-                        element.removeEventListener("animationend", onAnimationEnd);
-                        element.removeEventListener("transitionend", onAnimationEnd);
-                        elementCount--;
-                        if (elementCount === 0) {
-                            resolve();
-                        }
+                const cleanPrefix = prefix.replace(/-$/, '');
+                const className = `gsap-${cleanPrefix}`;
+
+                // Use last state's values as "from" if needed
+                if (prefix === 'to-') {
+                    for (const key in this.lastState) {
+                        element.style.setProperty(`--from-${key}`, fromOverride[key] ?? this.lastState[key]);
+                    }
+                } else if (prefix === 'from-') {
+                    for (const key in properties) {
+                        element.style.setProperty(`--to-${key}`, this.lastState[key]);
                     }
                 }
-                element.addEventListener("animationend", onAnimationEnd);
-                element.addEventListener("transitionend", onAnimationEnd);
+
+                // Set target properties
+                setVariables(element, properties, prefix);
+
+                element.classList.remove(className);
+                void element.offsetWidth;
+
+                requestAnimationFrame(() => {
+                    element.classList.add(className);
+                });
+
+                const onEnd = () => {
+                    element.removeEventListener("animationend", onEnd);
+                    element.removeEventListener("transitionend", onEnd);
+
+                    // Save the last state after animation
+                    if (prefix === 'to-') {
+                        this.lastState = { ...this.lastState, ...properties };
+                    } else if (prefix === 'from-') {
+                    }
+
+                    if (--count === 0) resolve();
+                };
+
+                element.addEventListener("animationend", onEnd);
+                element.addEventListener("transitionend", onEnd);
 
                 setTimeout(() => {
-                    if (elementCount > 0) {
-                        elementCount = 0;
+                    if (count > 0) {
+                        count = 0;
                         resolve();
                     }
                 }, 5000);
-            })
-        })
+            });
+        });
     }
 
     to(selector, properties) {
-        return this.#animationPromise(selector, properties, 'to-');
+        return this.#animationPromise(selector, properties, 'to-', this.lastState);
     }
 
     from(selector, properties) {
@@ -45,39 +79,39 @@ export class GsapClone {
 
     fromTo(selector, fromToProperties) {
         const elements = document.querySelectorAll(selector);
+
         return new Promise((resolve) => {
-            let elementCount = elements.length;
-            if (elementCount === 0) {
-                resolve();
-                return;
-            }
+            let count = elements.length;
+            if (count === 0) return resolve();
+
             elements.forEach((element) => {
-                element.classList.add('gsap-fromTo');
                 setVariables(element, fromToProperties["from"], 'from-');
                 setVariables(element, fromToProperties["to"], 'to-');
                 setVariables(element, fromToProperties, 'fromTo-');
 
-                const onAnimationEnd = (event) => {
-                    if(event.target === element){
-                        element.removeEventListener("animationend", onAnimationEnd);
-                        element.removeEventListener("transitionend", onAnimationEnd);
-                        elementCount--;
-                        if(elementCount === 0){
-                            resolve();
-                        }
-                    }
-                }
-                element.addEventListener("animationend", onAnimationEnd);
-                element.addEventListener("transitionend", onAnimationEnd);
+                element.classList.remove('gsap-fromTo');
+                void element.offsetWidth;
+                requestAnimationFrame(() => {
+                    element.classList.add('gsap-fromTo');
+                });
+
+                const onEnd = () => {
+                    element.removeEventListener("animationend", onEnd);
+                    element.removeEventListener("transitionend", onEnd);
+                    this.lastState = { ...this.lastState, ...to }; // Update to final state
+                    if (--count === 0) resolve();
+                };
+
+                element.addEventListener("animationend", onEnd);
+                element.addEventListener("transitionend", onEnd);
 
                 setTimeout(() => {
-                    if(elementCount > 0){
-                        elementCount = 0;
+                    if (count > 0) {
+                        count = 0;
                         resolve();
                     }
                 }, 5000);
-            })
-        })
+            });
+        });
     }
-
 }
