@@ -1,10 +1,9 @@
-function setVariables(element, properties, prefix = '') {
-    const cleanPrefix = prefix.replace(/-$/, '');
+const setVariables = (element, animationProp = {}, prefix) => {
+    for (const [key, value] of Object.entries(animationProp)){
 
-    for (const [key, value] in properties) {
-        if (value === null) continue;
+        if (value == null) continue;
 
-        element.style.setProperty(`--${cleanPrefix}-${key}`, value);
+        element.style.setProperty(`--${prefix}${key}`, value);
     }
 }
 
