@@ -49,7 +49,7 @@ export class GsapClone {
 
                     // Save the last state after animation
                     if (prefix === 'to-') {
-                        this.lastState = { ...this.lastState, ...properties };
+                        this.lastState = {...this.lastState, ...properties};
                     } else if (prefix === 'from-') {
                     }
 
@@ -79,15 +79,30 @@ export class GsapClone {
 
     fromTo(selector, fromToProperties) {
         const elements = document.querySelectorAll(selector);
+        const configKeys = ['duration', 'ease', 'delay', 'repeat', 'direction', 'fillMode', 'iterationCount', 'animationTimingFunction'];
+
 
         return new Promise((resolve) => {
             let count = elements.length;
             if (count === 0) return resolve();
 
+            const configProps = {};
+            for (const key in fromToProperties) {
+                if (configKeys.includes(key)) {
+                    configProps[key] = fromToProperties[key];
+                }
+            }
+
             elements.forEach((element) => {
-                setVariables(element, fromToProperties["from"], 'from-');
-                setVariables(element, fromToProperties["to"], 'to-');
-                setVariables(element, fromToProperties, 'fromTo-');
+                if (fromToProperties.from) {
+                    setVariables(element, fromToProperties.from, 'from-');
+                }
+
+                if (fromToProperties.to) {
+                    setVariables(element, fromToProperties.to, 'to-');
+                }
+
+                setVariables(element, configProps, 'fromTo-');
 
                 element.classList.remove('gsap-fromTo');
                 void element.offsetWidth;
@@ -98,7 +113,7 @@ export class GsapClone {
                 const onEnd = () => {
                     element.removeEventListener("animationend", onEnd);
                     element.removeEventListener("transitionend", onEnd);
-                    this.lastState = { ...this.lastState, ...to }; // Update to final state
+                    this.lastState = { ...this.lastState, ...fromToProperties.to };
                     if (--count === 0) resolve();
                 };
 
